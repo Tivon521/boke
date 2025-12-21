@@ -1,0 +1,41 @@
+# admin/config.yml
+# NOTE:
+# - GitHub backend needs an OAuth proxy (backend.base_url). See Decap docs.
+# - For easiest "no-backend" auth, many people use Netlify + git-gateway.
+# - You can still use this admin UI locally with `local_backend: true`.
+
+locale: "zh_Hans"
+publish_mode: editorial_workflow
+
+media_folder: "uploads"
+public_folder: "/uploads"
+
+local_backend: true
+
+backend:
+  name: github
+  repo: YOUR_GITHUB_NAME/YOUR_REPO
+  branch: main
+  # You must deploy an OAuth proxy and set these two:
+  base_url: "https://YOUR-OAUTH-PROXY.example.com"
+  auth_endpoint: "auth"
+
+collections:
+  - name: "posts"
+    label: "文章"
+    folder: "posts"
+    create: true
+    extension: "md"
+    format: "frontmatter"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "标题", name: "title", widget: "string" }
+      - { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD", time_format: false }
+      - { label: "摘要", name: "summary", widget: "text", required: false }
+      - { label: "阅读分钟", name: "minutes", widget: "number", required: false, value_type: "int", min: 1 }
+      - { label: "标签", name: "tags", widget: "list", required: false, default: [] }
+      - { label: "精选", name: "featured", widget: "boolean", required: false, default: false }
+      - { label: "缩略图", name: "thumb", widget: "image", required: false }
+      - { label: "封面色相(0-360)", name: "coverHue", widget: "number", required: false, value_type: "int", min: 0, max: 360 }
+      - { label: "月刊备注(Issue Notes)", name: "issueNote", widget: "string", required: false }
+      - { label: "正文", name: "body", widget: "markdown" }
